@@ -1,38 +1,85 @@
-.App {
+@import url("https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap");
+
+body {
+  background: rgb(8, 8, 66);
+  background: linear-gradient(
+    270deg,
+    rgb(21, 21, 29) 50%,
+    rgba(5, 27, 32, 1) 100%
+  );
+  color: #ccc;
+  opacity: 0.7;
+}
+
+.logo {
+  font-family: "MedievalSharp", cursive;
   text-align: center;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.modal-header {
+  background: rgb(66, 26, 8);
+  background: linear-gradient(
+    185deg,
+    rgba(66, 26, 8, 1) 50%,
+    rgba(32, 24, 5, 1) 100%
+  );
+  border-bottom: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.panel-heading {
+  padding: 0;
+  border: 0;
+}
+.panel-title > a,
+.panel-title > a:active {
+  display: block;
+  padding: 15px;
+  color: #555;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  word-spacing: 3px;
+  text-decoration: none;
+}
+.panel-heading a:before {
+  font-family: "Glyphicons Halflings";
+  content: "/f078";
+  float: right;
+  transition: all 0.2s;
+}
+.rotate {
+  transition: 0.2s ease-in-out;
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+.not_rotate {
+  transition: 0.3s ease-in-out;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+.hide_list {
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.show_list {
+  opacity: 1;
+  height: auto;
+  /* min-height: auto; */
+  transition: 0.3s ease-in-out;
+}
+
+.custom-form {
+  border: none;
+  border-bottom: 1px solid white;
+  border-radius: 0px;
+  background: none;
+}
+.custom-form:focus {
+  background: none;
+  outline: none;
   color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  box-shadow: none;
 }
