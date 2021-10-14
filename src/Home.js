@@ -8,7 +8,6 @@ import { AiOutlineDelete } from "react-icons/ai";
 
 const getLocalItems = () => {
   let TodayList = localStorage.getItem("today_item");
-  console.log("new", TodayList);
   if (TodayList) {
     return JSON.parse(localStorage.getItem("today_item"));
   } else {
@@ -19,7 +18,6 @@ const getLocalItems = () => {
 const PokeLocalStorage = () => {
   let pokebud = localStorage.getItem("poke");
 
-  console.log("po", pokebud);
   if (pokebud) {
     return JSON.parse(localStorage.getItem("poke"));
   } else {
@@ -106,6 +104,13 @@ export default function Home() {
     setPoke(poke + +deletedItem[0].amount);
   };
 
+  // Date and Time
+  var d = new Date();
+  // var displayDate = d.getDate() + "/" + d.getMonth()
+  var Today = d.getDate() + "/" + d.getMonth();
+
+  var Yesterday = d.getDate() - 1 + "/" + d.getMonth();
+
   // localStorage.setItem("name", "starlord");
   // localStorage.removeItem("name");
 
@@ -151,7 +156,7 @@ export default function Home() {
         <h3 className="logo p-3">PokeBud</h3>
         <div className="d-flex justify-content-around">
           <p style={{ fontSize: "18px" }}>
-            Total Amount in Poke : <span> ${poke} </span>{" "}
+            Total Amount in : <span> ${poke} </span>{" "}
           </p>
           <BsPencil
             onClick={() => setModalShow(true)}
@@ -165,12 +170,14 @@ export default function Home() {
             className="form-control custom-form my-4"
             type="text"
             onChange={(e) => setItem(e.target.value)}
+            required
           />
           <input
             placeholder="Enter Price"
             className="form-control custom-form my-4"
             type="number"
             onChange={(e) => setPrice(e.target.value)}
+            required
           />
           <div>
             <Button onClick={addTodayItems} variant="contained" color="primary">
@@ -188,7 +195,8 @@ export default function Home() {
                 onDoubleClick={() => toggleClass(id)}
                 className="container border mb-3 pt-3 d-flex justify-content-between flex-wrap"
               >
-                <p>Amount Spend in {list.date} </p>
+                {list.id === 0 && <p>Spend in {Today} </p>}
+                {list.id === 1 && <p>Spend in {Yesterday} </p>}
                 <p>{list.id === 0 && totalTodayAmount} </p>
                 <div>
                   <i
