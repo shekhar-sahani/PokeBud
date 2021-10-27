@@ -33,6 +33,11 @@ export default function Home() {
   const [today, setToday] = useState(getLocalItems());
   const [item, setItem] = useState();
   const [price, setPrice] = useState();
+  const [time, setTime] = useState();
+  const [minutes, setMinutes] = useState();
+  const [block, setBlock] = useState();
+  const [itemAmount, setItemAmount] = useState([]);
+  const [dayvalue, setDayValue] = useState(0);
 
   // console.log("total", amountSpentInOneDay);
 
@@ -46,11 +51,16 @@ export default function Home() {
 
   useEffect(() => {
     setList(Listitems);
+    setToday(today);
+    console.log("total_items", today);
   }, []);
 
   useEffect(() => {
     localStorage.setItem("today_item", JSON.stringify(today));
     localStorage.setItem("poke", JSON.stringify(poke));
+    setTime(new Date().toLocaleTimeString());
+    setMinutes(new Date().getDate());
+    setBlock(0);
   }, [poke]);
 
   const toggleClass = (id) => {
@@ -78,6 +88,8 @@ export default function Home() {
         id: today.length,
         name: item,
         amount: price,
+        Time: time,
+        Minutes: minutes,
       },
     ]);
     if (price !== 0) {
@@ -104,19 +116,25 @@ export default function Home() {
     setPoke(poke + +deletedItem[0].amount);
   };
 
-  // Date and Time
   var d = new Date();
-  // var displayDate = d.getDate() + "/" + d.getMonth()
   var Today = d.getDate() + "/" + d.getMonth();
 
+  var hour = d.getHours();
+
+  console.log("hours", minutes);
+
+  var minute = d.getMinutes();
+
+  {
+    today.map((item) => {
+      if (minutes - item.Minutes > 3) {
+        localStorage.removeItem("today_item");
+      }
+    });
+  }
+
   var Yesterday = d.getDate() - 1 + "/" + d.getMonth();
-
-  // localStorage.setItem("name", "starlord");
-  // localStorage.removeItem("name");
-
-  // sessionStorage.setItem("name", "gamora");
-  // console.log(sessionStorage.getItem("name"));
-  // sessionStorage.removeItem('name')
+  var twoDaysAgo = d.getDate() - 2 + "/" + d.getMonth();
 
   function MyVerticallyCenteredModal(props) {
     return (
@@ -179,10 +197,13 @@ export default function Home() {
             onChange={(e) => setPrice(e.target.value)}
             required
           />
-          <div>
+          <div className="d-flex justify-content-between">
             <Button onClick={addTodayItems} variant="contained" color="primary">
               Add
             </Button>
+            {/* {totalTodayAmount >= 1 && (
+              <div>Amount Spend in Three Days {totalTodayAmount} </div>
+            )} */}
           </div>
         </form>
 
@@ -197,7 +218,8 @@ export default function Home() {
               >
                 {list.id === 0 && <p>Spend in {Today} </p>}
                 {list.id === 1 && <p>Spend in {Yesterday} </p>}
-                <p>{list.id === 0 && totalTodayAmount} </p>
+                {list.id === 2 && <p>Spend in {twoDaysAgo} </p>}
+                {/* <p>{list.id === 0 && totalTodayAmount} </p> */}
                 <div>
                   <i
                     className={
@@ -211,9 +233,9 @@ export default function Home() {
                   style={{ width: "100%" }}
                   className={list.show ? "show_list" : "hide_list"}
                 >
-                  {list.id === 0 ? (
+                  {today.map((item) => (
                     <>
-                      {today.map((item) => (
+                      {list.id === 0 && minutes - item.Minutes < 1 ? (
                         <div
                           key={item.id}
                           style={{
@@ -222,8 +244,10 @@ export default function Home() {
                           }}
                           className="d-flex justify-content-between"
                         >
-                          <p style={{ width: "70%" }}>{item.name}</p>
-                          <b style={{ width: "10%" }}>{item.amount} </b>
+                          <p style={{ width: "30%" }}>{item.name}</p>
+                          <b style={{ width: "10%" }}>${item.amount}</b>
+                          {/* <b style={{ width: "30%" }}>{item.Time} </b> */}
+                          {/* <b style={{ width: "30%" }}>{item.Minutes} </b> */}
                           <div
                             onClick={() => removeTodayItems(item)}
                             style={{ width: "10%" }}
@@ -231,11 +255,63 @@ export default function Home() {
                             <AiOutlineDelete />
                           </div>
                         </div>
-                      ))}
+                      ) : (
+                        <></>
+                      )}
+
+                      {list.id === 1 &&
+                      minutes - item.Minutes >= 1 &&
+                      minutes - item.Minutes < 2 ? (
+                        <div
+                          key={item.id}
+                          style={{
+                            textDecoration: "underline",
+                            textUnderlinePosition: "under",
+                          }}
+                          className="d-flex justify-content-between"
+                        >
+                          <p style={{ width: "30%" }}>{item.name}</p>
+                          <b style={{ width: "10%" }}>${item.amount} </b>
+                          {/* <b style={{ width: "30%" }}>{item.Time} </b> */}
+                          {/* <b style={{ width: "30%" }}>{item.Minutes} </b> */}
+                          {/* <div
+                            onClick={() => removeTodayItems(item)}
+                            style={{ width: "10%" }}
+                          >
+                            <AiOutlineDelete />
+                          </div> */}
+                        </div>
+                      ) : (
+                        <></>
+                      )}
+
+                      {list.id === 2 &&
+                      minutes - item.Minutes >= 2 &&
+                      minutes - item.Minutes < 3 ? (
+                        <div
+                          key={item.id}
+                          style={{
+                            textDecoration: "underline",
+                            textUnderlinePosition: "under",
+                          }}
+                          className="d-flex justify-content-between"
+                        >
+                          <p style={{ width: "30%" }}>{item.name}</p>
+                          <b style={{ width: "10%" }}>${item.amount} </b>
+                          {/* <b style={{ width: "30%" }}>{item.Time} </b> */}
+                          {/* <b style={{ width: "30%" }}>{item.Minutes} </b> */}
+                          {/* <div
+                            onClick={() => removeTodayItems(item)}
+                            style={{ width: "10%" }}
+                          >
+                            <AiOutlineDelete />
+                          </div> */}
+                        </div>
+                      ) : (
+                        <></>
+                      )}
                     </>
-                  ) : (
-                    <></>
-                  )}
+                  ))}
                 </div>
                 <div
                   style={{ width: "100%" }}
